@@ -79,7 +79,9 @@ On your terminal:
 3. Activate your virtual environment.
 4. Run the command:
 - `python3 main.py` (to run the program)
-- `jupyter notebook main_demo.ipynb` (to open the jupyter notebook) 
+- `jupyter notebook main_demo.ipynb` (to open the jupyter notebook)
+- `flask run` (to run the app locally in your browser)
+
 
 ### Usage example
 ![Demo usage](core/assets/images/demo_usage.png)
