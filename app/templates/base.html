@@ -10,13 +10,20 @@
         {% endif %}
     </head>
     <body>
+        <!-- navigation bar -->
         <div>
             DDAPP: 
-            <a href="{{ url_for('index') }}">Home</a>
+            <!-- `url_for()`: Flask function to generate URLs from view function names -->
+            <a href="{{ url_for('index') }}">Home</a> <!-- link -->
             <a href="{{ url_for('login') }}">Login</a>
         </div>
-
+        <!-- show flashed message -->
         <hr>
+        <!-- 
+            Flask function to get a list of all flashed messages
+            in the context of template (< with construct)
+            -> messages removed after getting them
+        -->
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>

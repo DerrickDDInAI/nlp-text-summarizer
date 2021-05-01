@@ -28,10 +28,20 @@
         <p>
             {{ form.username.label }}<br> <!-- label -->
             {{ form.username(size=32) }} <!-- field with argument size (->HTML attribute) -->
+            
+            <!-- dislay error message from validators -->
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </p>
         <p>
             {{ form.password.label }}<br>
             {{ form.password(size=32) }}
+            
+            <!-- dislay error message from validators -->
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </p>
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
         <p>{{ form.submit() }}</p>
