@@ -1,0 +1,39 @@
+<!--
+    Login form template
+-->
+
+<!-- extends to inherit from base template -->
+{% extends "base.html" %}
+
+<!-- block control statement "content" to combine with base template -->
+{% block content %}
+    <h1>Sign In</h1>
+
+    <!-- 
+        web form container
+        - action attribute: to tell browser the URL to use when the user submit the form;
+        action = "" -> the URL is the current one
+        - method attribute: HTTP request method to use when form is submitted to the server; 
+        By default: GET request but to submit form data, POST request is preferred.
+        - novalidate attribute: to tell browser not to apply validation to form fields 
+        => to let Flask app apply validation in the server.
+    -->
+    <form action="" method="post" novalidate>
+
+        <!--
+            form.hidden_tag(): hidden field to protect form against CSRF attacks
+            with SECRET_KEY defined in config.
+        -->
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.username.label }}<br> <!-- label -->
+            {{ form.username(size=32) }} <!-- field with argument size (->HTML attribute) -->
+        </p>
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}
+        </p>
+        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}

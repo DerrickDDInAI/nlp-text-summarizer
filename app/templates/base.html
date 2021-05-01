@@ -1,0 +1,37 @@
+<!-- Base template: parts of layout common to all templates -->
+
+<html>
+    <head>
+        <!-- conditional statement -->
+        {% if title %}
+        <title>{{ title }} - World</title> <!-- {{ variable }} -->
+        {% else %}
+        <title>Welcome to My World!</title>
+        {% endif %}
+    </head>
+    <body>
+        <div>
+            DDAPP: 
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('login') }}">Login</a>
+        </div>
+
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        <!-- 
+            block control statement
+            block name: "content"
+            to specify where to place templates inheriting this base template
+        -->
+        {% block content %}{% endblock %}
+    </body>
+</html>

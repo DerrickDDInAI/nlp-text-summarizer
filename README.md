@@ -80,7 +80,7 @@ On your terminal:
 4. Run the command:
 - `python3 main.py` (to run the program)
 - `jupyter notebook main_demo.ipynb` (to open the jupyter notebook)
-- `flask run` (to run the app locally in your browser)
+- `flask run` and browse to the link provided (to run the app locally in your browser)
 
 
 ### Usage example
