@@ -14,8 +14,9 @@ class Config(object):
     # specify port as some services only open specific ports
     port = int(os.environ.get('PORT', 5000))
 
-    # path where to store uploaded files
-    UPLOAD_FOLDER = 'app/static/client/'
+    # absolute path where to store uploaded files
+    UPLOAD_FOLDER = os.path.abspath('app/static/client/')
+    # UPLOAD_FOLDER = /Users/derrickvanfrausum/BeCode_AI/git-repos/nlp-text-summarizer/app/static/client
     
     # set of allowed file  extensions
     ALLOWED_EXTENSIONS = {'txt', 'pdf'}
