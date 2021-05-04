@@ -11,5 +11,12 @@ class Config(object):
     # secret key with defaut value if no environment variable `SECRET_KEY` returns None
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'secret-key-hard-to-guess'
 
-    # Specify port as some services only open specific ports
+    # specify port as some services only open specific ports
     port = int(os.environ.get('PORT', 5000))
+
+    # path where to store uploaded files
+    UPLOAD_FOLDER = 'app/static/client/'
+    
+    # set of allowed file  extensions
+    ALLOWED_EXTENSIONS = {'txt', 'pdf'}
+    # ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}

@@ -17,3 +17,6 @@ instance/
 # Visual Studio Code
 .vscode
 
+# MacOS
+.DS_Store
+

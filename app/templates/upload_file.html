@@ -1,0 +1,33 @@
+<!--
+    Template to keep the python scripts separate from layout of web page.
+-->
+
+<!-- extends to inherit from base template -->
+{% extends "base.html" %}
+
+<!-- block control statement "content" to combine with base template -->
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <!-- 
+        web form container
+        - action attribute: to tell browser the URL to use when the user submit the form;
+        action = "" -> the URL is the current one
+        - method attribute: HTTP request method to use when form is submitted to the server; 
+        By default: GET request but POST request is preferred for submitting form data.
+        - novalidate attribute: to tell browser not to apply validation to form fields 
+        => to let Flask app apply validation in the server.
+    -->
+    <form action="" method="post" enctype="multipart/form-data", novalidate>
+        <input type=file name=file>
+        <input type=submit value=Upload>
+    </form>
+
+    <div>
+        <!-- conditional statement -->
+        {% if summary %}
+        <h2>"Summary"</h2>
+        <p>{{ summary }}</p>
+        {% endif %}
+    </div>
+{% endblock %}
