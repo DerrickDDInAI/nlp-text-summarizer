@@ -15,10 +15,11 @@ import os.path
 from flask import render_template, flash, redirect, url_for, request, send_from_directory, abort
 from werkzeug.utils import secure_filename
 from transformers import pipeline
+import pandas as pd
 
 # import local modules
 from app import app # from app package import app (instance of Flask object)
-from app.forms import LoginForm, TextForm, UploadForm
+from app.forms import SearchForm, TextForm, UploadForm
 
 
 # load pre-trained summarization pipeline
@@ -85,7 +86,7 @@ def book():
 
     """
     # Create LoginForm instance
-    form = LoginForm()
+    form = SearchForm()
 
     # if data submitted by user is validated
     if form.validate_on_submit():
@@ -94,7 +95,8 @@ def book():
         flash(f'Login requested for user {form.username.data}, remember_me={form.remember_me.data}')
 
     return render_template('book.html', title='Sign In', form=form)
-
+      sr = pd.DataFrame(ef)  
+      return render_template('dataframe.html',tables=[sr.to_html(justify='center, classes='table table-bordered table-hover')],titles = [filename], form=form) 
 
 @app.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
@@ -105,34 +107,18 @@ def upload_file():
     - POST --> submit form data to server 
 
     """
-    # if request.method == 'POST':
-    #     # check if the post request has the file part
-    #     if 'file' not in request.files:
-    #         flash('No file part')
-    #         return redirect(request.url)
-    #     file = request.files['file']
-    #     # if user does not select file, browser also
-    #     # submit an empty part without filename
-    #     if file.filename == '':
-    #         flash('No selected file')
-    #         return redirect(request.url)
-    #     if file and allowed_file(file.filename):
-    #         filename = secure_filename(file.filename)
-    #         # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
     # Create UploadForm instance
     form = UploadForm()
     
     if form.validate_on_submit():
         file = form.upload.data
-        # filename = secure_filename(file.filename)
+        filename = secure_filename(file.filename)
         # f.save(os.path.join(
         #     app.instance_path, 'photos', filename
         # ))
         # return redirect(url_for('index'))
         file.seek(0)
         text = file.read().decode("utf-8")
-        print(type(text))
 
         # Create message to user
         flash(f'Text requested to summarize')
@@ -140,21 +126,7 @@ def upload_file():
         # summarize
         summary = summarize(text, summarizer)
 
-        # # Create LoginForm instance
-        # form = TextForm()
-        
-        # # if data submitted by user is validated
-        # if form.validate_on_submit():
-        #     # create message to user
-        #     flash(f'Text requested to summarize')
-            
-        #     # summarize
-        #     summary = summarize(text)
-        #     return render_template('upload_file.html', title='Summarize a text', form=form, summary=summary)
-
-        # return redirect(url_for('uploaded_file',
-        #                         filename=filename))
-        return render_template('upload_file.html', title='Upload a File', form=form, summary=summary)
+        return render_template('upload_file.html', title='Upload a File', form=form, filename=filename, summary=summary)
     return render_template('upload_file.html', title='Upload a File', form=form)
 
 @app.route('/upload/<filename>')

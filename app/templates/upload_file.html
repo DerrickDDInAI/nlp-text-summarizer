@@ -23,6 +23,7 @@
         <input type=file name=file>
         <input type=submit value=Upload>
         -->
+        <!-- crsf protection to secure form -->
         {{ form.csrf_token }}
 
         <p>
@@ -37,6 +38,15 @@
 
         <p>{{ form.submit() }}</p>
     </form>
+
+    <div>
+        <!-- conditional statement -->
+        {% if filename %}
+        <p>See uploaded file</p>
+        <!-- `url_for()`: Flask function to generate URLs from view function names -->
+        <a href="{{ url_for('uploaded_file', filename=filename) }}">{{ filename }}x</a> <!-- link -->
+        {% endif %}
+    </div>
 
     <div>
         <!-- conditional statement -->

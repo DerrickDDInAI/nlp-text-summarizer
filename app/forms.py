@@ -9,17 +9,16 @@ from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 
 # Define classes
-class LoginForm(FlaskForm):
+class SearchForm(FlaskForm):
     """
     Class used by Flask-WTF extension to represent web forms
     Class variables: fields of the form with 
     - 1st argument: description or label
     - 2nd argument (optional): validators to assign validation behaviors to fields
     """
-    username = StringField('Username', validators=[DataRequired()]) # DataRequired to check that field is not submitted empty
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me') # check box
-    submit = SubmitField('Sign In') # submit button
+    search = StringField('Search Books')
+    check_box = BooleanField('Remember Me') # check box
+    submit = SubmitField('Summarize!') # submit button
 
 class TextForm(FlaskForm):
     """
