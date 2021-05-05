@@ -1,0 +1,58 @@
+<!--
+    Template to keep the python scripts separate from layout of web page.
+-->
+
+<!-- extends to inherit from base template -->
+{% extends "base.html" %}
+
+<!-- block control statement "content" to combine with base template -->
+{% block app_content %}
+    <h1>{{ title }}</h1>
+
+    <!-- 
+        web form container
+        - action attribute: to tell browser the URL to use when the user submit the form;
+        action = "" -> the URL is the current one
+        - method attribute: HTTP request method to use when form is submitted to the server; 
+        By default: GET request but POST request is preferred for submitting form data.
+        - novalidate attribute: to tell browser not to apply validation to form fields 
+        => to let Flask app apply validation in the server.
+    -->
+    <form action="" spellcheck="true", method="post" enctype="multipart/form-data", novalidate>
+        <!--
+        <input type=file name=file>
+        <input type=submit value=Upload>
+        -->
+        <!-- crsf protection to secure form -->
+        {{ form.csrf_token }}
+
+        <p>
+            {{ form.upload.label }}<br>
+            {{ form.upload }}
+        
+            <!-- dislay error message from validators -->
+            {% for error in form.upload.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>{{ form.submit() }}</p>
+    </form>
+
+    <div>
+        <!-- conditional statement -->
+        {% if filename %}
+        <p>See uploaded file</p>
+        <!-- `url_for()`: Flask function to generate URLs from view function names -->
+        <a href="{{ url_for('uploaded_file', filename=filename) }}">{{ filename }}</a> <!-- link -->
+        {% endif %}
+    </div>
+
+    <div>
+        <!-- conditional statement -->
+        {% if summary %}
+        <h2>Summary</h2>
+        <p>{{ summary }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

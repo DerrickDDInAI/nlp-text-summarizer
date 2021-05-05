@@ -5,50 +5,35 @@
 <!-- extends to inherit from base template -->
 {% extends "base.html" %}
 
+<!-- to render form with Bootstrap styles -->
+{% import 'bootstrap/wtf.html' as wtf %}
+
+<!-- css -->
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+
 <!-- block control statement "content" to combine with base template -->
-{% block content %}
+{% block app_content %}
     <h1>Summarize a book</h1>
 
-    <!-- 
-        web form container
-        - action attribute: to tell browser the URL to use when the user submit the form;
-        action = "" -> the URL is the current one
-        - method attribute: HTTP request method to use when form is submitted to the server; 
-        By default: GET request but POST request is preferred for submitting form data.
-        - novalidate attribute: to tell browser not to apply validation to form fields 
-        => to let Flask app apply validation in the server.
-    -->
-    <form action="" method="post" novalidate>
-
-        <!--
-            form.hidden_tag(): hidden field to protect form against CSRF attacks
-            with SECRET_KEY defined in config.
-        -->
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.search.label }}<br> <!-- label -->
-            {{ form.search(size=32) }} <!-- field with argument size (->HTML attribute) -->
-            
-            <!-- dislay error message from validators -->
-            {% for error in form.search.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-
-        <div class="page" >
-            <!-- conditional statement -->
-            {% if tables %}
-            <h2>Search Results</h2>
-            <div>
-                <!-- loop through table list -->
-                {% for table in tables %}
-                <!-- table title -->
-                {{titles[loop.index0]}} <!-- jinja2 loop index startings at 0)-->
-                {{ table|safe }} <!-- safe: show parameter as html object -->
-                {% endfor %}
-            </div>
-            {% endif %}
+    <!-- wtf.quick_form() macro to render form with Bootstrap styles -->
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
         </div>
-    </form>
+    </div>
+
+    <div class="page" >
+        <!-- conditional statement -->
+        {% if tables %}
+        <h2>Search Results</h2>
+        <div>
+            <!-- loop through table list -->
+            {% for table in tables %}
+            <!-- table title -->
+            {{titles[loop.index0]}} <!-- jinja2 loop index startings at 0)-->
+            {{ table|safe }} <!-- safe: show parameter as html object -->
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
 {% endblock %}

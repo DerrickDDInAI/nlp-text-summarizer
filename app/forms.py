@@ -1,12 +1,18 @@
 """
 Python script to define child classes of FlaskForm 
 """
+# =====================================================================
+# Import
+# =====================================================================
+
 # import 3rd-party modules
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextField, TextAreaField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Length
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 
+# import local modules
+from app.static.data.default_text import default_text, source
 
 # Define classes
 class SearchForm(FlaskForm):
@@ -27,8 +33,9 @@ class TextForm(FlaskForm):
     - 1st argument: description or label
     - 2nd argument (optional): validators to assign validation behaviors to fields
     """
+    source = source
     # text = TextField('Insert a text', validators=[validators.required(), validators.Length(min=6, max=3000)])
-    text_area = TextAreaField("TextArea", default="Please insert a text", validators=[DataRequired()]) # DataRequired to check that field is not submitted empty
+    text_area = TextAreaField("TextArea", default=default_text, validators=[DataRequired()]) # DataRequired to check that field is not submitted empty
     submit = SubmitField('Summarize!') # submit button
 
 

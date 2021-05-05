@@ -6,7 +6,11 @@
 {% extends "base.html" %}
 
 <!-- block control statement "content" to combine with base template -->
-{% block content %}
+{% block app_content %}
     <h1>{{ title }}</h1>
-    <p>{{ filename }}</p>
+    <p>{{ book_id }}</p>
+
+    <div>
+        {{ metadata }}
+    </div>
 {% endblock %}

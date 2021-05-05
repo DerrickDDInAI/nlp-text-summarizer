@@ -21,7 +21,7 @@ import pandas as pd
 # import local modules
 from app import app # from app package import app (instance of Flask object)
 from app.forms import SearchForm, TextForm, UploadForm
-from app.scrape import search_books
+from app.scrape import search_books, get_book_text
 
 
 # load pre-trained summarization pipeline
@@ -114,7 +114,7 @@ def book():
             title = "Summarize a book",
             form=search_form,
             tables=[search_results.to_html(
-                # formatters={'book_id':lambda x:f'<a href="{{{{ url_for(\'summarize_book\', filename={x}) | safe }}}}">{x}</a>'},
+                # formatters={'book_id':lambda x:f'<a href="{{{{ url_for(\'summarize_book\', book_id={x}) | safe }}}}">{x}</a>'},
                 formatters={"book_id": link_frmt},
                 justify='center', 
                 classes='search_results', 
@@ -170,10 +170,24 @@ def uploaded_file(filename):
     except FileNotFoundError:
         abort(404)
 
-@app.route('/summarize_book/<filename>')
-def summarize_book(filename):
+@app.route('/summarize_book/<book_id>')
+def summarize_book(book_id):
     """
     View function to return file
     * param: book
     """
-    return render_template('book_summary.html', title='Book Summary', filename=filename)
+    # ebook link
+    link = "https://www.gutenberg.org/ebooks/" + book_id
+    
+    # get book text in plain text UTF-8
+    book_text = get_book_text(link)
+
+    # find index position where metadata from website ends
+    metadata_end_idx = book_text.rfind("***",0,1000)
+    metadata = book_text[:metadata_end_idx + 3]
+
+    # summarize book
+
+
+
+    return render_template('book_summary.html', title='Book Summary', book_id=book_id, metadata=metadata)
