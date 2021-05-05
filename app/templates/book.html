@@ -7,7 +7,7 @@
 
 <!-- block control statement "content" to combine with base template -->
 {% block content %}
-    <h1>Sign In</h1>
+    <h1>Summarize a book</h1>
 
     <!-- 
         web form container
@@ -26,24 +26,29 @@
         -->
         {{ form.hidden_tag() }}
         <p>
-            {{ form.username.label }}<br> <!-- label -->
-            {{ form.username(size=32) }} <!-- field with argument size (->HTML attribute) -->
+            {{ form.search.label }}<br> <!-- label -->
+            {{ form.search(size=32) }} <!-- field with argument size (->HTML attribute) -->
             
             <!-- dislay error message from validators -->
-            {% for error in form.username.errors %}
+            {% for error in form.search.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}
-            
-            <!-- dislay error message from validators -->
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
         <p>{{ form.submit() }}</p>
+
+        <div class="page" >
+            <!-- conditional statement -->
+            {% if tables %}
+            <h2>Search Results</h2>
+            <div>
+                <!-- loop through table list -->
+                {% for table in tables %}
+                <!-- table title -->
+                {{titles[loop.index0]}} <!-- jinja2 loop index startings at 0)-->
+                {{ table|safe }} <!-- safe: show parameter as html object -->
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
     </form>
 {% endblock %}

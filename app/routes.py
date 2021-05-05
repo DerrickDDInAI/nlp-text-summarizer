@@ -9,6 +9,7 @@ when a client request a given URL.
 # =====================================================================
 
 # import internal modules
+from os import link
 import os.path
 
 # import 3rd-party modules
@@ -20,6 +21,7 @@ import pandas as pd
 # import local modules
 from app import app # from app package import app (instance of Flask object)
 from app.forms import SearchForm, TextForm, UploadForm
+from app.scrape import search_books
 
 
 # load pre-trained summarization pipeline
@@ -67,8 +69,10 @@ def text():
 
     # if data submitted by user is validated
     if form.validate_on_submit():
+
         # Create message to user
         flash(f'Text requested to summarize')
+
         # summarize
         summary = summarize(form.text_area.data, summarizer)
         return render_template('text.html', title='Summarize a text', form=form, summary=summary)
@@ -86,17 +90,42 @@ def book():
 
     """
     # Create LoginForm instance
-    form = SearchForm()
+    search_form = SearchForm()
 
     # if data submitted by user is validated
-    if form.validate_on_submit():
+    if search_form.validate_on_submit():
 
-        # Create message to user
-        flash(f'Login requested for user {form.username.data}, remember_me={form.remember_me.data}')
+        # create message to user
+        flash(f'Search requested for user')
 
-    return render_template('book.html', title='Sign In', form=form)
-      sr = pd.DataFrame(ef)  
-      return render_template('dataframe.html',tables=[sr.to_html(justify='center, classes='table table-bordered table-hover')],titles = [filename], form=form) 
+        # search results
+        search_results: pd.DataFrame = search_books(search_form.search.data)
+
+        # create lambda function to make book_id clickable
+        # link_frmt = lambda x: '''<a href="#" target="popup" 
+        #               onclick="window.open('summarize_book/{0}', 
+        #               'name','width=600,height=400')">{0}</a>'''.format(x)
+
+        ## target "_blank" to open link in a new tab/window depending on browser's settings
+        link_frmt = lambda x: f'<a href="summarize_book/{x}" target="_blank">{x}</a>' 
+
+        return render_template(
+            'book.html',
+            title = "Summarize a book",
+            form=search_form,
+            tables=[search_results.to_html(
+                # formatters={'book_id':lambda x:f'<a href="{{{{ url_for(\'summarize_book\', filename={x}) | safe }}}}">{x}</a>'},
+                formatters={"book_id": link_frmt},
+                justify='center', 
+                classes='search_results', 
+                render_links=True,
+                escape=False)],
+            # titles=search_results.columns.values
+            titles=['search']
+            )
+        
+    return render_template('book.html', title="Summarize a book", form=search_form)
+      # return render_template('dataframe.html',tables=[sr.to_html(justify='center, classes='table table-bordered table-hover')],titles = [filename], form=form) 
 
 @app.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
@@ -110,6 +139,7 @@ def upload_file():
     # Create UploadForm instance
     form = UploadForm()
     
+    # if data submitted by user is validated 
     if form.validate_on_submit():
         file = form.upload.data
         filename = secure_filename(file.filename)
@@ -139,3 +169,11 @@ def uploaded_file(filename):
         return send_from_directory(app.config['UPLOAD_FOLDER'], filename=filename)
     except FileNotFoundError:
         abort(404)
+
+@app.route('/summarize_book/<filename>')
+def summarize_book(filename):
+    """
+    View function to return file
+    * param: book
+    """
+    return render_template('book_summary.html', title='Book Summary', filename=filename)

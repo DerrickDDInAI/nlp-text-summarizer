@@ -46,7 +46,7 @@ def get_book_links(soup) -> pd.DataFrame:
     from search page
     """
     # create empty dataframe
-    cols = ["title", "author", "link", "cover_img_link", "book_id"]
+    cols = ["title", "author", "link", "book_id"]
     books_df = pd.DataFrame(columns=cols)
 
     # define base url for links
@@ -57,10 +57,10 @@ def get_book_links(soup) -> pd.DataFrame:
         title = element.find("span", attrs={"class": "title"}).text
         author = element.find("span", attrs={"class": "subtitle"}).text
         link = base_url + element.find("a", attrs={"class": "link"}).get("href")
-        cover_img_link = base_url + element.find("img", attrs={"class": "cover-thumb"}).get("src")
+        # cover_img_link = base_url + element.find("img", attrs={"class": "cover-thumb"}).get("src")
         book_id = re.findall(r"\d+", link)[0]
         # utf_8_txt_link = f"{base_url}/files/{book_id}/{book_id}-0.txt"
-        books_df.loc[rank] = [title, author, link, cover_img_link, book_id]
+        books_df.loc[rank] = [title, author, link, book_id]
         
     return books_df
 
@@ -75,10 +75,7 @@ def get_book_text(link):
     base_url = "https://www.gutenberg.org"
 
     # scrape book text link
-    book_text_link = base_url + soup.find("a", attrs={"class": "link", "type": "text/plain"}).get("href")
-    # type="text/plain; charset=utf-8"
-    # href="/files/84/84-0.txt" endswith .txt or contains ".txt"
-    # soup.select_one('th:-soup-contains("area")')
+    book_text_link = base_url + soup.find("a", attrs={"class": "link"}, href=re.compile(r".txt")).get("href")
 
     # slow down requests frequency to avoid IP ban
     time.sleep(random.uniform(2.0, 3.0))
@@ -90,12 +87,10 @@ def get_book_text(link):
     # return book text
     return response.text
 
-def search_books() -> pd.DataFrame:
+def search_books(search) -> pd.DataFrame:
     """
     Function to search for books
     """
-    # input search query
-    search = input("search for books, authors, genre, ...")
 
     # prepare search query url in required format
     search_book_url = "https://www.gutenberg.org/ebooks/search/?query="
@@ -127,6 +122,10 @@ def main():
     """
     Main function
     """
+    # input search query
+    # search = input("search for books, authors, genre, ...")
+
+
     popular_books = get_most_popular_books()
     print(popular_books)
     book_link = popular_books.loc[1, "link"]

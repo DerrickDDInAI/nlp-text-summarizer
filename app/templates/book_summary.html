@@ -1,0 +1,12 @@
+<!--
+    Template to keep the python scripts separate from layout of web page.
+-->
+
+<!-- extends to inherit from base template -->
+{% extends "base.html" %}
+
+<!-- block control statement "content" to combine with base template -->
+{% block content %}
+    <h1>{{ title }}</h1>
+    <p>{{ filename }}</p>
+{% endblock %}

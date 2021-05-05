@@ -17,8 +17,8 @@ class SearchForm(FlaskForm):
     - 2nd argument (optional): validators to assign validation behaviors to fields
     """
     search = StringField('Search Books')
-    check_box = BooleanField('Remember Me') # check box
-    submit = SubmitField('Summarize!') # submit button
+    # check_box = BooleanField('Remember Me') # check box
+    submit = SubmitField('Search!') # submit button
 
 class TextForm(FlaskForm):
     """

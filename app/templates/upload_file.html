@@ -18,7 +18,7 @@
         - novalidate attribute: to tell browser not to apply validation to form fields 
         => to let Flask app apply validation in the server.
     -->
-    <form action="" method="post" enctype="multipart/form-data", novalidate>
+    <form action="" spellcheck="true", method="post" enctype="multipart/form-data", novalidate>
         <!--
         <input type=file name=file>
         <input type=submit value=Upload>
@@ -44,7 +44,7 @@
         {% if filename %}
         <p>See uploaded file</p>
         <!-- `url_for()`: Flask function to generate URLs from view function names -->
-        <a href="{{ url_for('uploaded_file', filename=filename) }}">{{ filename }}x</a> <!-- link -->
+        <a href="{{ url_for('uploaded_file', filename=filename) }}">{{ filename }}</a> <!-- link -->
         {% endif %}
     </div>
 
