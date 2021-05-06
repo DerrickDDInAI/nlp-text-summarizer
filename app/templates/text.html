@@ -19,14 +19,14 @@
         </div>
     </div>
 
-    <div>
-        <!-- conditional statement -->
-        {% if summary %}
-        <h2>Summary</h2>
-        <div class="container">
-            {{ summary }}
+    <!-- conditional statement -->
+    {% if summary %}
+    <div class="card border-info mb-3">
+        <h5 class="card-header">Summary</h5>
+        <div class="card-body">
+            <h5 class="card-title">With pipeline transformers</h5>
+            <p class="card-text">{{ summary }}</p>
         </div>
-        <p></p>
-        {% endif %}
     </div>
+    {% endif %}
 {% endblock %}

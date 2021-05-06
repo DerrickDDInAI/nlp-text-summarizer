@@ -66,7 +66,7 @@ def get_book_links(soup) -> pd.DataFrame:
 
 def get_book_text(link):
     """
-    Function to get book text in plain text UTF-8
+    Function to get book text in html
     """
     # download book page
     soup = download_page(link)
@@ -74,18 +74,24 @@ def get_book_text(link):
     # define base url for links
     base_url = "https://www.gutenberg.org"
 
-    # scrape book text link
-    book_text_link = base_url + soup.find("a", attrs={"class": "link"}, href=re.compile(r".txt")).get("href")
+    # scrape book html link
+    book_html_link = base_url + soup.find("a", attrs={"class": "link"}, href=re.compile(r".htm")).get("href")
 
     # slow down requests frequency to avoid IP ban
     time.sleep(random.uniform(2.0, 3.0))
 
-    # download book text page
-    response = requests.get(book_text_link)
-    print(book_text_link, response.status_code)
-    
+    # download book page
+    response = requests.get(book_html_link)
+    print(book_html_link, response.status_code)
+
+    # scrape
+    soup = bs(response.text, 'html.parser')
+    tags = soup.find_all(['h4', 'p'])
+    text = [tag.text for tag in tags]
+    book = ' '.join(text)
+
     # return book text
-    return response.text
+    return book
 
 def search_books(search) -> pd.DataFrame:
     """
@@ -115,7 +121,7 @@ def get_most_popular_books() -> pd.DataFrame:
 
 
 # ============================================================
-# Run
+# Main Function
 # ============================================================
 
 def main():
@@ -134,13 +140,13 @@ def main():
     # book_text = get_book_text("https://www.gutenberg.org/ebooks/31547")
 
     # find index position where metadata from website ends
-    metadata_end_idx = book_text.rfind("***",0,1000)
-    print(book_text[metadata_end_idx: 1000])
+    # metadata_end_idx = book_text.rfind("***",0,1000)
+    # print(book_text[metadata_end_idx: 1000])
 
 
-# ============================================================
+# =====================================================================
 # Run
-# ============================================================
+# =====================================================================
 
 # execute main() if you directly run this program
 if __name__ == '__main__':

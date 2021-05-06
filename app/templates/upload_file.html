@@ -18,21 +18,27 @@
             {{ wtf.quick_form(form) }}
         </div>
     </div>
-
-    <div>
-        <!-- conditional statement -->
-        {% if filename %}
-        <p>See uploaded file</p>
-        <!-- `url_for()`: Flask function to generate URLs from view function names -->
-        <a href="{{ url_for('uploaded_file', filename=filename) }}">{{ filename }}</a> <!-- link -->
-        {% endif %}
+    
+    <!-- conditional statement -->
+    {% if filename %}
+    <div class="card border-info mb-3">
+        <h5 class="card-header">See uploaded_file</h5>
+        <div class="card-body">
+            <h5 class="card-title">plain text UTF-8</h5>
+            <!-- `url_for()`: Flask function to generate URLs from view function names -->
+            <a href="{{ url_for('uploaded_file', filename=filename) }}" class="btn btn-primary">{{ filename }}</a> <!-- link -->
+        </div>
     </div>
+    {% endif %}
 
-    <div>
-        <!-- conditional statement -->
-        {% if summary %}
-        <h2>Summary</h2>
-        <p>{{ summary }}</p>
-        {% endif %}
+    <!-- conditional statement -->
+    {% if summary %}
+    <div class="card border-info mb-3">
+        <h5 class="card-header">Summary</h5>
+        <div class="card-body">
+            <h5 class="card-title">With pipeline transformers</h5>
+            <p class="card-text">{{ summary }}</p>
+        </div>
     </div>
+    {% endif %}
 {% endblock %}

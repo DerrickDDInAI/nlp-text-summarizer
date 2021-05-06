@@ -8,9 +8,11 @@
 <!-- block control statement "content" to combine with base template -->
 {% block app_content %}
     <h1>{{ title }}</h1>
-    <p>{{ book_id }}</p>
-
-    <div>
-        {{ metadata }}
+    <div class="card border-info mb-3">
+        <h5 class="card-header">Sample</h5>
+        <div class="card-body">
+            <h5 class="card-title">{{ book_id }}</h5>
+            <p class="card-text">{{ sample }}</p>
+        </div>
     </div>
 {% endblock %}

@@ -73,8 +73,12 @@ def text():
         # Create message to user
         flash(f'Text requested to summarize')
 
+        # Get min_length and max_length
+        min_length = form.min_input.data or 30
+        max_length = form.max_input.data or 130
+
         # summarize
-        summary = summarize(form.text_area.data, summarizer)
+        summary = summarize(form.text_area.data, summarizer, min_length, max_length)
         return render_template('text.html', title='Summarize a text', form=form, summary=summary)
     
     return render_template('text.html', title='Summarize a text', form=form)
@@ -152,9 +156,13 @@ def upload_file():
 
         # Create message to user
         flash(f'Text requested to summarize')
+
+        # Get min_length and max_length
+        min_length = form.min_input.data or 30
+        max_length = form.max_input.data or 130        
         
         # summarize
-        summary = summarize(text, summarizer)
+        summary = summarize(text, summarizer, min_length, max_length)
 
         return render_template('upload_file.html', title='Upload a File', form=form, filename=filename, summary=summary)
     return render_template('upload_file.html', title='Upload a File', form=form)
@@ -179,15 +187,14 @@ def summarize_book(book_id):
     # ebook link
     link = "https://www.gutenberg.org/ebooks/" + book_id
     
-    # get book text in plain text UTF-8
+    # get book text
     book_text = get_book_text(link)
 
-    # find index position where metadata from website ends
-    metadata_end_idx = book_text.rfind("***",0,1000)
-    metadata = book_text[:metadata_end_idx + 3]
+    # sample from book
+    sample = book_text[:1000]
 
     # summarize book
 
 
 
-    return render_template('book_summary.html', title='Book Summary', book_id=book_id, metadata=metadata)
+    return render_template('book_summary.html', title='Book Summary', book_id=book_id, sample=sample)
