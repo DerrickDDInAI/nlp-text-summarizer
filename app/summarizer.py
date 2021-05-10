@@ -17,7 +17,7 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 
 
 # import local modules
-from decorators import timer
+from app.decorators import timer
 
 # load pre-trained summarization pipeline
 # global summarizer
@@ -93,13 +93,13 @@ class TransformersPipeline():
             
             # add tokens to 1st chunk
             else:
-                chunks.append(sentence.split(' '))
+                chunks.append(sentence.split(' ')[:max_chunk_len])
 
-            # for each chunk, join tokens to make a single string
-            for i in range(len(chunks)):
-                chunks[i] = ' '.join(chunks[i])
+        # for each chunk, join tokens to make a single string
+        for i in range(len(chunks)):
+            chunks[i] = ' '.join(chunks[i])
             
-            return chunks
+        return chunks
 
     # decorator to measure runtime of function
     @timer

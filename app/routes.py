@@ -22,6 +22,7 @@ import pandas as pd
 from app import app # from app package import app (instance of Flask object)
 from app.forms import SearchForm, TextForm, UploadForm
 from app.scrape import search_books, get_book_text
+from app.summarizer import gensim_summary
 
 
 # load pre-trained summarization pipeline
@@ -193,8 +194,9 @@ def summarize_book(book_id):
     # sample from book
     sample = book_text[:1000]
 
-    # summarize book
+    # Extractive summary
+    extractive_summary = gensim_summary(book_text)
 
 
 
-    return render_template('book_summary.html', title='Book Summary', book_id=book_id, sample=sample)
+    return render_template('book_summary.html', title='Book Summary', book_id=book_id, sample=sample, extractive_summary=extractive_summary)

@@ -95,6 +95,7 @@ from Theano 2.27 promotion at BeCode.
 
 I would like to thank:
 - my colleagues and coaches at BeCode for their help and guidance.
+- [nicknochnack GitHub](https://github.com/nicknochnack/Longform-Summarization-with-Hugging-Face/blob/main/LongSummarization.ipynb) and [HuggingFace community](https://discuss.huggingface.co/t/summarization-on-long-documents/920/24) for their solutions on how to summarize long texts
 
 
 ## Next steps
